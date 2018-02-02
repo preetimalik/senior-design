@@ -1,0 +1,104 @@
+.postShout-header{
+  font-size: 13px;
+  padding-left: rem-calc(10);
+  padding-top: rem-calc(10);
+}
+
+.postShout-text{
+  padding-left: rem-calc(10);
+  padding-right: rem-calc(10);
+}
+
+.tag-list {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 0 rem-calc(10) 0 rem-calc(10);
+  ul {
+    list-style-type: none;
+    max-height: rem-calc(200);
+    margin: 0;
+  }
+  h5 {
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+  }
+  ul li img {
+    float: left;
+    margin: 0 rem-calc(5) 0 rem-calc(5);
+  }
+  ul li p {
+    font-size: 10px;
+    line-height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  ul li {
+    padding-top: rem-calc(5);
+    padding-bottom: rem-calc(5);
+    margin-left: rem-calc(10);
+    height: rem-calc(42);
+    overflow: hidden;
+  }
+  ul:hover {
+    background: #eee;
+    cursor: pointer;
+  }
+
+}
+#tag-alert-bt{
+  position: absolute;
+  right: 0;
+  top: rem-calc(15);
+}
+
+#tagging-alert-box{
+  margin: rem-calc(10);
+}
+
+#post-shout-bt{
+  margin-right: rem-calc(10);
+}
+
+#post_shout_ta{
+  padding: rem-calc(5);
+  margin: 0 rem-calc(10) rem-calc(2.5) rem-calc(10);
+  outline: 1px solid $gainsboro;
+  overflow: hidden;
+  resize: none;
+  height: rem-calc(90);
+}
+#hash_tag_shout_ta{
+  outline: 0;
+  overflow: hidden;
+  z-index: 20;
+  background: #ffffff;
+  border: 0;
+  border-bottom: 1px solid $gainsboro;
+  -webkit-appearance: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.tag_row{
+  padding: rem-calc(10);
+}
+
+.ts-button {
+  @include button(
+    // $padding - Used to build padding for buttons Default: $button-med or rem-calc(12)
+  $padding:rem-calc(0),
+    // Background color. We can set $bg:false for a transparent background. Default: $primary-color.
+  $bg:false,
+    // If true, set to button radius which is $global-radius or explicitly set radius amount in px (ex. $radius:10px). Default:false.
+  $radius:false,
+    // We can set $full-width:true to remove side padding extend width. Default:false
+  $full-width:false,
+    // We can set $disabled:true to create a disabled transparent button. Default:false
+  $disabled:false,
+    // $is-input - <input>s and <button>s take on strange padding. We added this to help fix that. Default:false
+  $is-input:false
+  );
+  padding-right: rem-calc(10);
+  padding-top: rem-calc(10);
+}

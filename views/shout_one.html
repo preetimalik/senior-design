@@ -1,0 +1,73 @@
+<div class="row collapse shout-post" >
+    <div class="panel post-main-panel">
+        <!--shout info-->
+        <div  class="row collapse post-info-div">
+            <!--profile pic-->
+            <!--<div class="small-4 medium-3 column">-->
+            <div class="post-profile-pic">
+                {% if Shout.isAnon %}
+                <a class="post-profile-pic-th" href="/img/anonymous.png">
+                    <img src="/img/anonymous_46.png">
+                </a>
+                {% else %}
+                <a class="post-profile-pic-th" href="/img/profile_pic_large.jpg">
+                    <img src="/img/profile_pic_46.jpg">
+                </a>
+                {% endif %}
+            </div>
+            <!--info-->
+            <!--<div class="small-20 medium-21 column">-->
+            <div class="post-info">
+                <ul class="no-bullet">
+                    {% if Shout.isAnon %}
+                    <li><a class="user_name">Anonymous</a></li>
+                    {% else %}
+                    <li><a class="user_name" href="/user/{{Shout.author.id()}}">{{ Shout.author.get().name }}</a></li>
+                    {% endif %}
+                    {% if Shout.isPrivate %}
+                    <li><a class="post_date">Private - {{ Shout.date.strftime('%Y-%m-%d')  }}</a></li>
+                    {% else %}
+                    <li><a class="post_date">Public - {{ Shout.date.strftime('%Y-%m-%d')  }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!--options-->
+            <div class="post-options">
+                <i class="fa fa-angle-down"></i>
+            </div>
+
+        </div>
+
+        <!--shout content-->
+        <div  class="row collapse post-content-div">
+            {{Shout.content|safe}}
+        </div>
+
+        <div class="row collapse post-activity-div">
+            <div class="left activity-counts">
+                <a onclick="likeContentAjax(true,'{{Shout.key.id()}}',null,this)">{{Shout.LikeText}}</a>
+                <span>-</span>
+                <a href="#" onclick="showCommentsAjax('{{Shout.key.id()}}');return false;" class="show_comments" data-shout-key="{{Shout.key.id()}}">Comment</a>
+                <span>-</span>
+                <a>Share</a>
+            </div>
+            <div class="right activity-action">
+                <a>
+                    <i class="fa fa-thumbs-o-up"><span id="shout_like_count_{{Shout.key.id()}}">{{Shout.Like|length}}</span></i>
+                    <i class="fa fa-comment-o"><span>{{Shout.commentCount}}</span></i>
+                    <i class="fa fa-share"><span>0</span></i>
+                </a>
+            </div>
+        </div>
+        <div id="post_comment_div_{{Shout.key.id()}}" class="row collapse post-comment-div">
+            <div id="comment_div_{{Shout.key.id()}}"  class="mCustomScrollbar comments-div" data-mcs-theme="dark"></div>
+            <div class="make-comment-div">
+                <div id="commentTextArea_{{Shout.key.id()}}" class="comment-input" data-shoutid="{{Shout.key.id()}}"  contenteditable="true"></div>
+                <div id="make_comment_bt_{{Shout.key.id()}}" class="row collapse make-comment-bts">
+                    <a id="commentButton" onclick="handlePostComment('{{Shout.key.id()}}')" class="button tiny left">Comment</a>
+                    <a href="#" class="button secondary tiny right cancelComment">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

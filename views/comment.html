@@ -1,0 +1,31 @@
+{% for comment in comments %}
+<div class="comment-post row collapse" data-comment-id="{{comment.key.id()}}">
+    <div class="comment-profile-pic medium-2 small-4 columns">
+        {% if comment.isAnon %}
+        <a class="comment-profile-pic-th">
+            <img src="/img/anonymous_32.png">
+        </a>
+        {% else %}
+        <a class="comment-profile-pic-th" href="/user/{{comment.author.id}}">
+            <img src="/img/profile_pic_32.jpg">
+        </a>
+        {% endif %}
+    </div>
+    <div class="comment-info medium-22 small-20 columns">
+        {% if comment.isAnon %}
+        <a class="comment-user-name">Anonymous</a>
+        {% else %}
+        <a class="comment-user-name" href="/user/{{comment.author.id}}">{{ comment.author.get().name }}</a>
+        {% endif %}
+        <div class="comment-content">
+            {{ comment.content }}
+        </div>
+        <div class="comment-activity small-24 columns">
+            <span class="comment-date-span">{{ comment.date.strftime('%Y-%m-%d')  }}</span>
+            <a onclick="likeContentAjax(false,'{{comment.key.parent().id()}}','{{comment.key.id()}}',this)">{{comment.LikeText}}</a>
+            <span>-</span>
+            <a> <i class="fa fa-thumbs-o-up"><span id="comment_like_count_{{comment.key.id()}}">{{comment.Like|length}}</span></i></a>
+        </div>
+    </div>
+</div>
+{% endfor %}

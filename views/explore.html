@@ -1,0 +1,289 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8" />
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+    <title>Shoutwaves | Beta</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+    <link rel="stylesheet" href="/css/mentionsInput/jquery.mentionsInput.css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href="/bower_components/labelauty/source/jquery-labelauty.css" rel='stylesheet' type='text/css'>
+    <link href="/bower_components/tagmanager/tagmanager.css" rel='stylesheet' type='text/css'>
+
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <script src="/js/jquery.autosize.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore.js' type='text/javascript'></script>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+    <script type="text/javascript" src="/js/shoutwaves/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="/js/shoutwaves/noty/layouts/inline.js"></script>
+
+
+    <!--GOOGLE MAP SAMPLE-->
+    <style type="text/css">
+        /* Set a size for our map container, the Google Map will take up 100% of this container */
+        #map {
+            width: 100%;
+            height: 100%;
+
+        }
+        .gm-style img { max-width: none; }
+        .gm-style label { width: auto; display: inline; }
+    </style>
+
+    <script type="text/javascript">
+        $.cookie('username', '{{user.name}}', { expires: 7});
+        $.cookie('token', '{{ token }}', {expires: 1});
+    </script>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZMpwL2_5qNuq1xrlHj7jZVuVonNZiTd4&libraries=visualization,places&v=3.4"></script>
+    <script type="text/javascript" src="/js/ContextMenu.js"></script>
+    <script type="text/javascript" src="/js/shoutwaves/map.js"> </script>
+
+
+</head>
+<body>
+
+<div class="row full-width collapse ">
+    <div id="map"></div>
+    <div class="topbar-div">
+        <div class="row collapse topbar">
+            <div class="medium-2 show-for-medium-up columns h100">
+                <a id="toggle_shout_div" class="tb_pg" href="#"> <i class="fa fa-arrows-alt fa-lg"></i></a>
+            </div>
+            <div class="small-9 medium-12 columns h100">
+                <div class="searchbox">
+                    <a id="search_bt" class="search_tb_bt" href="#"> <i class="fa fa-search fa-lg"></i></a>
+                    <div class="search_input_div">
+                        <input type="text" placeholder="Search..." name="search" id="search_input" required>
+                    </div>
+                </div>
+            </div>
+            <div class="small-1 columns h100">
+
+            </div>
+            <div class="small-6  medium-4 columns h100">
+                <a class="tb_pg" href="/explore" > <i class="fa fa-globe fa-lg"></i> Explore</a>
+            </div>
+            <div class="small-1 columns h100">
+                <a class="tb_divider">|</a>
+            </div>
+            <div class="small-3 medium-2  columns h100">
+                <a href="#" id="notification_bt" class="tb_pg" onclick="notification_bt(event)" ><i class="fa fa-bell fa-lg">
+                    {% if unread_n ==0 %}
+                    <span class="notification-counter" style="display: none;"></span></i></a>
+                {% else %}
+                <span class="notification-counter ">{{unread_n}}</span></i></a>
+                {% endif %}
+            </div>
+            <div class="small-4 medium-2 columns h100" style="text-align: center; vertical-align: middle;" >
+                <a id="tb_user_option" class="th-topbar" onclick="user_option_bt(event)">
+                    <img src="" style="vertical-align: middle;">
+                </a>
+            </div>
+            <!--DROP DOWN MENUS-->
+            <div id="user_menu" class="small-12 medium-6 columns th-div box_shadow">
+                <ul>
+                    <li id="user_menu_profile" class="username">
+                        <a href="/user/{{user.key.id()}}" >
+                            <h1><strong>{{user.name}}</strong></h1>
+                            <small>View Profile</small>
+                        </a>
+                    </li>
+                    <hr>
+                    <li id="anon_toggle"><i class="fa fa-user-secret"></i>Anonymous</li>
+                    <li id="setting_bt"><i class="fa fa-cog"></i>Settings</li>
+                    <li><i class="fa fa-sign-out"></i>Logout</li>
+                </ul>
+            </div>
+            <div id="notification_menu" class="small-24 medium-16 medium-pull-2 columns n_menu box_shadow">
+                <div class="title">
+                    <h1>Notifications</h1>
+                    <hr>
+                </div>
+                <div id="notification_div" class="mCustomScrollbar n_div" data-mcs-theme="dark">
+                    {% for n in notifications %}
+                    {% set unreadClass='' %}
+                    {% if n.unread == True %}
+                    {% set unreadClass='unread' %}
+                    {% endif %}
+                    <div class="row collapse {{unreadClass}}" href="/shout/{{n.content_key.id()}}">
+                        <a class="n_link" href="/shout/{{n.content_key.id()}}"></a>
+                        <div class="small-4 columns">
+                            <a class="th">
+                                <!--later add user profile pic-->
+                                <img src="/img/profile_pic_46.jpg">
+                            </a>
+                        </div>
+                        <div class="small-20 columns n_info_div">
+                            <!--set name-->
+                            {% set user = n.user_key.get().name %}
+                            {% if n.is_anon %}
+                            {% set user = 'Anonymous' %}
+                            {% endif %}
+                            <h1><strong>{{user}}</strong><small>{{n.verb}}</small></h1>
+                            <small class="time_tag">{{ n.date.strftime('%b %d at %I : %M')}}</small>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!--SEARCH DROP DOWN-->
+            <div class="small-24 medium-12 medium-push-2 left columns box_shadow s_menu tag-list">
+                <ul id="u_search_result">
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <!--SHOUT DIV-->
+    <div id="shout_area" class="shout-div hide-shout-div">
+    </div>
+</div>
+
+<!-- Activity reveal for Settings from MAP -->
+<div id="settingsModal" class="reveal-modal small" data-reveal>
+    <div class="row collapse">
+        <div class="left">
+            <h3 class="postShout-header">Settings</h3>
+        </div>
+        <div class="right">
+            <a id="closeSModal2" class="ts-button"> <i class="fa fa-times fa-lg"></i></a>
+        </div>
+    </div>
+    <dl class="accordion" data-accordion>
+        <dd class="accordion-navigation">
+            <a href="#usernamePanel" style="text-align: center; margin-bottom: 1em;">Change Username</a>
+            <div id="usernamePanel" class="content">
+                <h3>Change Name</h3>
+                <input id="newName" type="text" placeholder="Enter Name" style="margin-bottom: 0.5em;">
+                <button class="button small" style="width: 100%;" onclick="updateInfo('name')">Change Name</button>
+            </div>
+        </dd>
+        <dd class="accordion-navigation">
+            <a href="#picturePanel" style="text-align: center; margin-bottom: 1em;">Change Profile Picture</a>
+            <div id="picturePanel" class="content">
+                <!--<h3>Change profile Picture</h3>-->
+                <!--<form action = "{{upload_url}}" method = "POST" enctype="multipart/form-data">-->
+                    <!--file: <input type="file" name="file">-->
+                    <!--<input type="submit" name="submit" value="Submit">-->
+                <!--</form>-->
+                <!--<input type="button" id="get_file" value="Grab file">-->
+                <!--<input type="file" id="my_file">-->
+                <!--<button class="button small" style="width: 100%;" onclick="updateInfo('picture')">Update Picture</button>-->
+            </div>
+        </dd>
+        <dd class="accordion-navigation">
+            <a href="#passwordPanel" style="text-align: center; margin-bottom: 1em;">Change Password</a>
+            <div id="passwordPanel" class="content">
+                <h3>Change Password</h3>
+                <label>Enter Current Password</label>
+                <input id="currentPass" type="password" name="pass" placeholder="Current Password" style="margin-bottom: 0.5em;"/>
+                <label>Enter New Password</label>
+                <input id="newPass" type="password" name="newPass" placeholder="new Password" style="margin-bottom: 0.5em;"/>
+                <label>Confirm New Password</label>
+                <input id="confirmPass" type="password" name="newPassConfirm" placeholder="new Password" style="margin-bottom: 0.5em;"/>
+                <button class="button small" style="width: 100%;" onclick="updateInfo('password')">Change Password</button>
+            </div>
+        </dd>
+        <dd class="accordion-navigation">
+            <a href="#accountPanel" style="text-align: center;">Deactivate Account</a>
+            <div id="accountPanel" class="content">
+                <a class="button alert" onclick="updateInfo('deactivate')">Deactivate Account</a>
+            </div>
+        </dd>
+    </dl>
+</div>
+
+
+<!-- Activity reveal for POST SHOUT from MAP -->
+<div id="shoutModal" class="reveal-modal tiny" data-reveal>
+    <div class="row collapse">
+        <div class="left">
+            <h5 class="postShout-header">Post a new Shout!</h5>
+        </div>
+        <div class="right">
+            <a id="closeSModal" class="ts-button"> <i class="fa fa-times fa-lg"></i></a>
+        </div>
+    </div>
+    <div class="row collapse">
+        <form id="map-shout-form">
+            <div class="row collapse">
+                <!--<div id="postShout-text" class="row">-->
+                <!--<textarea id="post_shout_ta" name="shoutContent" rows=2 id="map-shoutTextArea"  placeholder="Add a shout..." ></textarea>-->
+                <p id="post_shout_ta" name="shoutContent" contenteditable="true"></p>
+                <!--</div>-->
+            </div>
+
+
+            <div class="tag-list" >
+                <ul id="tagging_user_list">
+                    <!--<li>-->
+                    <!--<img src="/img/anonymous_28.png">-->
+                    <!--<h5>Headline</h5>-->
+                    <!--<p>Lorem ipsum dolor sit amet...</p>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+            <div class="row collapse tag_row">
+                <!--<p id="hash_tag_shout_ta" name="shoutContent" contenteditable="true">-->
+                <!--<textarea id="hash_tag" class="example" rows="1"></textarea>-->
+                <input  id="hash_tag_shout_ta" type="text" name="tags" placeholder="Tags" class="tm-input tm-input-info tm-input-small" maxlength="10"/>
+            </div>
+            <div class="row collapse">
+                <div class="small-12 columns" >
+                    <input id="private-checkbox" class="left" type="checkbox" data-labelauty="Public|Private" name="isPrivate">
+                </div>
+                <div class="small-12 columns" >
+                    <a id="post-shout-bt" onclick="PostShout()" class="button tiny right">Shout</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+<!--	.row>.large-8.columns>.panel>p>lorem15 -->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+
+
+<script src="/bower_components/foundation/js/foundation.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/bower_components/labelauty/source/jquery-labelauty.js"></script>
+<script src="/js/mentionsInput/lib/jquery.events.input.js" type='text/javascript'></script>
+<script src="/js/mentionsInput/lib/jquery.elastic.js" type='text/javascript'></script>
+<script src="/js/mentionsInput/jquery.mentionsInput.js" type='text/javascript'></script>
+<script type="text/javascript" src="/js/shoutwaves/Hammer.js"></script>
+<script src="/js/shoutwaves/custom.js"></script>
+<script src="/js/shoutwaves/tagging.js"></script>
+<script src="/js/shoutwaves/ajax.js"></script>
+<script src="/js/shoutwaves/TopBar.js"></script>
+<script src="/js/shoutwaves/helper.js"></script>
+<script src="/js/shoutwaves/ShoutDiv.js"></script>
+<script src="/bower_components/caret.js/jquery.caret.js"></script>
+<script src="/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/bower_components/tagmanager/tagmanager.js"></script>
+<script>
+    $(document).foundation();
+    jQuery(".tm-input").tagsManager({maxTags: 5});
+    (function($){
+        $(window).load(function(){
+            $.mCustomScrollbar.defaults.scrollButtons.enable=true; //enable scrolling buttons by default
+            $.mCustomScrollbar.defaults.axis="y";
+            $.mCustomScrollbar.defaults.setWidth =false;
+        });
+
+    })(jQuery);
+</script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+.shout-div{
+  //    display: block;
+  background: transparent;
+  overflow: auto;
+  position: fixed;
+  height: rem-calc(500);
+  width:rem-calc(552);
+  //  width: 0;
+  max-width: 100vw;
+  padding-right: rem-calc(17);
+  padding-left: rem-calc(17);
+  right:0;
+  top: rem-calc(55);
+  //  z-index: 100;
+}
+.hide-shout-div{
+  right: - rem-calc(552);
+}
+
+.shout-trends{
+  margin-top: rem-calc(10) !important;
+  padding: rem-calc(10) rem-calc(20) rem-calc(10) rem-calc(20);
+  width: 100%;
+  min-height: rem-calc(50);
+  background: #ffffff;
+  color: #222222;
+  font-family: 'Roboto',sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 100%;
+  border: 1px solid rgb(215, 215, 215);
+  div{
+    height: 100%;
+    a{
+      display: inline-block;
+      height: rem-calc(30);
+      line-height: rem-calc(30);
+      padding-right: rem-calc(5);
+
+    }
+  }
+}
+
+
+.shout-post{
+  //  margin: rem-calc(10);
+  width: 100%;
+  padding: 0;
+
+  .post-main-panel{
+    margin: rem-calc(5) 0 rem-calc(5) 0;
+    padding: 0;
+
+    .post-info-div{
+      padding: rem-calc(15);
+      .post-profile-pic{
+        float: left;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        display: inline-block;
+        overflow: hidden;
+      }
+      .post-info{
+        float: left;
+        height: 46px;
+        line-height: 46px;
+        display: inline-block;
+        vertical-align: middle;
+        ul{
+          padding-top: rem-calc(7.5);
+          padding-left: rem-calc(15);
+        }
+
+      }
+      .post-options{
+        float: right;
+        height: 20px;
+        width: 20px;
+        display: inline-block;
+        vertical-align: top;
+        i{
+          float: right;
+        }
+      }
+      .post-options:hover{
+
+        cursor: pointer;
+      }
+
+    }
+    .post-content-div{
+      padding: 0 rem-calc(20) rem-calc(10) rem-calc(20);
+
+      font-family: 'Roboto', sans-serif;
+      color: #404040;
+      font-size: 13px;
+      line-height: 1.4;
+
+    }
+    .post-activity-div{
+      padding: 0 rem-calc(20) rem-calc(10) rem-calc(20);
+      color: #404040;
+      font-size: 12px;
+      line-height: 1.4;
+      .activity-counts{
+        a{
+          font-family: 'Roboto', sans-serif;
+          color: $link-color;
+        }
+      }
+      .activity-action{
+        a{
+          font-family: 'Roboto', sans-serif;
+          color: $link-color;
+          i{
+            padding-left: rem-calc(2.5);
+            span{
+              padding-left: rem-calc(2.5);
+            }
+          }
+        }
+      }
+    }
+    .post-comment-div{
+      display: none;
+      background: whitesmoke;
+      //      max-height: rem-calc(500);
+      padding: 0;
+      border: 0;
+      border-top: 1px solid $iron;
+      height: auto;
+      overflow: hidden;
+
+      .comments-div{
+        max-height: rem-calc(400);
+        margin-right: rem-calc(20);
+        overflow: auto;
+        .mCSB_scrollTools{
+          width: rem-calc(20);
+          margin: 0;
+          padding: 0;
+        }
+        .comment-post{
+          //          display: inline-block;
+          line-height: 100%;
+          background-color: whitesmoke;
+          margin: rem-calc(5) 0 rem-calc(5) rem-calc(20) ;
+          .comment-profile-pic{
+            height: 32px;
+            width: 32px;
+            margin-top: rem-calc(0);
+            overflow: hidden;
+            border-radius: 10%;
+            -webkit-border-radius: 10%;
+            -moz-border-radius: 10%;
+          }
+          .comment-info{
+            font-size:12px;
+            font-family: 'Roboto', sans-serif;
+            .comment-user-name{
+              //              display: inline;
+              margin-right: rem-calc(1);
+              font-weight:bold;
+              color:#000000;
+
+            }
+            .comment-user-name:hover{
+              color:#000000;
+              border-bottom: 1px solid #000000;
+            }
+            .comment-content{
+              display: inline;
+            }
+            .comment-activity{
+              font-size:12px;
+              font-family: 'Roboto', sans-serif;
+              padding: rem-calc(2.5) 0;
+              .comment-date-span{
+                color: $base;
+                padding-right: rem-calc(5);
+              }
+
+            }
+          }
+
+        }
+      }
+      .make-comment-div{
+        padding: rem-calc(10) rem-calc(20) rem-calc(10) rem-calc(20);
+        width: 100%;
+        .comment-input{
+          padding: rem-calc(2.5) rem-calc(5) rem-calc(2.5) rem-calc(5) ;
+          background: #ffffff;
+          outline: 1px solid $gainsboro;
+          overflow: hidden;
+          resize: none;
+          font-size:12px;
+          font-family: 'Roboto', sans-serif;
+        }
+        .make-comment-bts{
+          display: none;
+          a{
+            margin: rem-calc(10) 0 0 0;
+          }
+        }
+      }
+    }
+  }
+}
